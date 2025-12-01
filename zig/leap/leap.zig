@@ -1,4 +1,8 @@
 pub fn isLeapYear(year: u32) bool {
-    return year % 4 == 0 and (year % 100 != 0 or year % 400 == 0);
+    // "A leap year check in three instructions"
+    // - by Falk Hüffner
+    //
+    // https://hueffner.de/falk/blog/a-leap-year-check-in-three-instructions.html
+    return ((year *% 1073750999) & 3221352463) <= 126976;
 }
 
