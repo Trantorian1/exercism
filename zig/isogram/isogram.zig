@@ -1,11 +1,14 @@
 const std = @import("std");
 
-pub fn isIsogram(str: []const u8) bool {
+pub fn isIsogram(str: [*:0]const u8) bool {
     var flags: u32 = 0;
-    for (str) |c| {
-        if (c == '-' or c == ' ') continue;
+    var i: usize = 0;
 
-        const mask = @as(u32, 1) << @truncate((std.ascii.toLower(c) - 'a'));
+    while (str[i] != 0) : (i += 1) {
+        const sub = @subWithOverflow(std.ascii.toLower(str[i]), 'a');
+        if (sub.@"1" == 1) continue;
+
+        const mask = @as(u32, 1) << @truncate((sub.@"0"));
         if (flags & mask > 0) return false;
 
         flags |= mask;
