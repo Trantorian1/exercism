@@ -31,7 +31,7 @@ pub fn isIsogram(str: []const u8) bool {
                 flags |= mask;
             },
             '-', ' ' => continue,
-            else => @panic("isIsogram only supports alphabetic strings with spaces and hyphens"),
+            else => unreachable,
         }
     }
 
