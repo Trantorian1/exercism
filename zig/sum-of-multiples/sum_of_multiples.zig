@@ -56,9 +56,11 @@ pub fn sum(allocator: std.mem.Allocator, factors: []const u32, limit: u32) !u64 
                     //
                     std.sort.pdq(u64, multiples, {}, std.sort.asc(u64));
                     var score = multiples[0];
-                    for (multiples[1..], multiples[0 .. multiples.len - 1]) |m, m_prev| if (m != m_prev) {
-                        score += m;
-                    };
+                    for (multiples[1..], multiples[0 .. multiples.len - 1]) |m, m_prev| {
+                        if (m != m_prev) {
+                            score += m;
+                        }
+                    }
 
                     return score;
                 },
