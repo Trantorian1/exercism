@@ -25,27 +25,23 @@ pub fn sum(allocator: std.mem.Allocator, factors: []const u32, limit: u32) !u64 
             // number of all multiples under the limit to allocate an array
             // large enough to hold them all without having to resize.
             var size: usize = 0;
-            for (factors) |f| {
-                if (f != 0) {
-                    size += (limit -| 1) / f;
-                }
-            }
+            for (factors) |f| if (f != 0) {
+                size += (limit -| 1) / f;
+            };
 
             const multiples = try allocator.alloc(u64, size);
             defer allocator.free(multiples);
 
             var i: usize = 0;
-            for (factors) |f| {
-                if (f != 0) {
-                    var m = f;
-                    while (m < limit) : ({
-                        i += 1;
-                        m += f;
-                    }) {
-                        multiples[i] = m;
-                    }
+            for (factors) |f| if (f != 0) {
+                var m = f;
+                while (m < limit) : ({
+                    i += 1;
+                    m += f;
+                }) {
+                    multiples[i] = m;
                 }
-            }
+            };
 
             switch (multiples.len) {
                 0 => return 0,
@@ -60,11 +56,9 @@ pub fn sum(allocator: std.mem.Allocator, factors: []const u32, limit: u32) !u64 
                     //
                     std.sort.pdq(u64, multiples, {}, std.sort.asc(u64));
                     var score = multiples[0];
-                    for (multiples[1..], multiples[0 .. multiples.len - 1]) |m, m_prev| {
-                        if (m != m_prev) {
-                            score += m;
-                        }
-                    }
+                    for (multiples[1..], multiples[0 .. multiples.len - 1]) |m, m_prev| if (m != m_prev) {
+                        score += m;
+                    };
 
                     return score;
                 },
